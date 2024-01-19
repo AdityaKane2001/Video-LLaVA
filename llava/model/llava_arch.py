@@ -21,7 +21,7 @@ import torch.nn as nn
 from .multimodal_encoder.builder import build_image_tower, build_video_tower
 from .multimodal_projector.builder import build_vision_projector
 
-from llava.constants import IGNORE_INDEX, X_TOKEN_INDEX, DEFAULT_X_PATCH_TOKEN, DEFAULT_X_START_TOKEN, DEFAULT_X_END_TOKEN
+from llava.constants import IGNORE_INDEX, X_TOKEN_INDEX, X_INDEX_TOKEN, DEFAULT_X_PATCH_TOKEN, DEFAULT_X_START_TOKEN, DEFAULT_X_END_TOKEN
 
 
 class LlavaMetaModel:
@@ -132,178 +132,209 @@ class LlavaMetaForCausalLM(ABC):
     def encode_videos(self, videos):
         video_features = self.get_model().get_video_tower()(videos)
         video_features = self.get_model().mm_projector(video_features)
-        return video_features
-    #
-    # def prepare_inputs_labels_for_multimodal(
-    #     self, input_ids, attention_mask, past_key_values, labels, images
-    # ):
-    #     vision_tower = self.get_vision_tower()
-    #     if vision_tower is None or images is None or input_ids.shape[1] == 1:
-    #         if past_key_values is not None and vision_tower is not None and images is not None and input_ids.shape[1] == 1:
-    #             attention_mask = torch.ones((attention_mask.shape[0], past_key_values[-1][-1].shape[-2] + 1), dtype=attention_mask.dtype, device=attention_mask.device)
-    #         return input_ids, attention_mask, past_key_values, None, labels
-    #
-    #     if type(images) is list or images.ndim == 5:
-    #         concat_images = torch.cat([image for image in images], dim=0)
-    #         image_features = self.encode_images(concat_images)
-    #         split_sizes = [image.shape[0] for image in images]
-    #         image_features = torch.split(image_features, split_sizes, dim=0)
-    #         image_features = [x.flatten(0, 1) for x in image_features]
-    #     else:
-    #         image_features = self.encode_images(images)
-    #
-    #     new_input_embeds = []
-    #     new_labels = [] if labels is not None else None
-    #     cur_image_idx = 0
-    #     for batch_idx, cur_input_ids in enumerate(input_ids):
-    #         if (cur_input_ids == IMAGE_TOKEN_INDEX).sum() == 0:
-    #             # multimodal LLM, but the current sample is not multimodal
-    #             # FIXME: this is a hacky fix, for deepspeed zero3 to work
-    #             half_len = cur_input_ids.shape[0] // 2
-    #             cur_image_features = image_features[cur_image_idx]
-    #             cur_input_embeds_1 = self.get_model().embed_tokens(cur_input_ids[:half_len])
-    #             cur_input_embeds_2 = self.get_model().embed_tokens(cur_input_ids[half_len:])
-    #             cur_input_embeds = torch.cat([cur_input_embeds_1, cur_image_features[0:0], cur_input_embeds_2], dim=0)
-    #             new_input_embeds.append(cur_input_embeds)
-    #             if labels is not None:
-    #                 new_labels.append(labels[batch_idx])
-    #             cur_image_idx += 1
-    #             continue
-    #         image_token_indices = torch.where(cur_input_ids == IMAGE_TOKEN_INDEX)[0]  # 把中间的imgtoken的位置找到
-    #         cur_new_input_embeds = []
-    #         if labels is not None:
-    #             cur_labels = labels[batch_idx]
-    #             cur_new_labels = []
-    #             assert cur_labels.shape == cur_input_ids.shape
-    #         while image_token_indices.numel() > 0:
-    #             cur_image_features = image_features[cur_image_idx]
-    #             image_token_start = image_token_indices[0]
-    #             if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_im_start_end', False):
-    #                 cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[:image_token_start-1]).detach())
-    #                 cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[image_token_start-1:image_token_start]))
-    #                 cur_new_input_embeds.append(cur_image_features)
-    #                 cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[image_token_start+1:image_token_start+2]))
-    #                 if labels is not None:
-    #                     cur_new_labels.append(cur_labels[:image_token_start])
-    #                     cur_new_labels.append(torch.full((cur_image_features.shape[0],), IGNORE_INDEX, device=labels.device, dtype=labels.dtype))
-    #                     cur_new_labels.append(cur_labels[image_token_start:image_token_start+1])
-    #                     cur_labels = cur_labels[image_token_start+2:]
-    #             else:
-    #                 cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[:image_token_start]))  # imgtoken之前的text拿出来，好像都是模板套话
-    #                 cur_new_input_embeds.append(cur_image_features)
-    #                 if labels is not None:
-    #                     cur_new_labels.append(cur_labels[:image_token_start])
-    #                     cur_new_labels.append(torch.full((cur_image_features.shape[0],), IGNORE_INDEX, device=labels.device, dtype=labels.dtype))
-    #                     cur_labels = cur_labels[image_token_start+1:]
-    #             cur_image_idx += 1
-    #             if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_im_start_end', False):
-    #                 cur_input_ids = cur_input_ids[image_token_start+2:]
-    #             else:
-    #                 cur_input_ids = cur_input_ids[image_token_start+1:]   # imgtoken之后的text拿出来，是真的question
-    #             image_token_indices = torch.where(cur_input_ids == IMAGE_TOKEN_INDEX)[0]
-    #         if cur_input_ids.numel() > 0:
-    #             if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_im_start_end', False):
-    #                 cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids).detach())
-    #             else:
-    #                 cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids))
-    #             if labels is not None:
-    #                 cur_new_labels.append(cur_labels)
-    #         cur_new_input_embeds = [x.to(device=self.device) for x in cur_new_input_embeds]  # 前面text+图片+后面question
-    #         cur_new_input_embeds = torch.cat(cur_new_input_embeds, dim=0)
-    #         new_input_embeds.append(cur_new_input_embeds)
-    #         if labels is not None:
-    #             cur_new_labels = torch.cat(cur_new_labels, dim=0)
-    #             new_labels.append(cur_new_labels)
-    #
-    #     if any(x.shape != new_input_embeds[0].shape for x in new_input_embeds):
-    #         max_len = max(x.shape[0] for x in new_input_embeds)
-    #
-    #         new_input_embeds_align = []
-    #         for cur_new_embed in new_input_embeds:
-    #             cur_new_embed = torch.cat((cur_new_embed, torch.zeros((max_len - cur_new_embed.shape[0], cur_new_embed.shape[1]), dtype=cur_new_embed.dtype, device=cur_new_embed.device)), dim=0)
-    #             new_input_embeds_align.append(cur_new_embed)
-    #         new_input_embeds = torch.stack(new_input_embeds_align, dim=0)
-    #
-    #         if labels is not None:
-    #             new_labels_align = []
-    #             _new_labels = new_labels
-    #             for cur_new_label in new_labels:
-    #                 cur_new_label = torch.cat((cur_new_label, torch.full((max_len - cur_new_label.shape[0],), IGNORE_INDEX, dtype=cur_new_label.dtype, device=cur_new_label.device)), dim=0)
-    #                 new_labels_align.append(cur_new_label)
-    #             new_labels = torch.stack(new_labels_align, dim=0)
-    #
-    #         if attention_mask is not None:
-    #             new_attention_mask = []
-    #             for cur_attention_mask, cur_new_labels, cur_new_labels_align in zip(attention_mask, _new_labels, new_labels):
-    #                 new_attn_mask_pad_left = torch.full((cur_new_labels.shape[0] - labels.shape[1],), True, dtype=attention_mask.dtype, device=attention_mask.device)
-    #                 new_attn_mask_pad_right = torch.full((cur_new_labels_align.shape[0] - cur_new_labels.shape[0],), False, dtype=attention_mask.dtype, device=attention_mask.device)
-    #                 cur_new_attention_mask = torch.cat((new_attn_mask_pad_left, cur_attention_mask, new_attn_mask_pad_right), dim=0)
-    #                 new_attention_mask.append(cur_new_attention_mask)
-    #             attention_mask = torch.stack(new_attention_mask, dim=0)
-    #             assert attention_mask.shape == new_labels.shape
-    #     else:
-    #         new_input_embeds = torch.stack(new_input_embeds, dim=0)
-    #         if labels is not None:
-    #             new_labels  = torch.stack(new_labels, dim=0)
-    #
-    #         if attention_mask is not None:
-    #             new_attn_mask_pad_left = torch.full((attention_mask.shape[0], new_input_embeds.shape[1] - input_ids.shape[1]), True, dtype=attention_mask.dtype, device=attention_mask.device)
-    #             attention_mask = torch.cat((new_attn_mask_pad_left, attention_mask), dim=1)
-    #             assert attention_mask.shape == new_input_embeds.shape[:2]
-    #
-    #     return None, attention_mask, past_key_values, new_input_embeds, new_labels
-    #
-    # def initialize_vision_tokenizer(self, model_args, tokenizer):
-    #     if model_args.mm_use_im_patch_token:
-    #         tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
-    #         self.resize_token_embeddings(len(tokenizer))
-    #
-    #     if model_args.mm_use_im_start_end:
-    #         num_new_tokens = tokenizer.add_tokens([DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN], special_tokens=True)
-    #         self.resize_token_embeddings(len(tokenizer))
-    #
-    #         if num_new_tokens > 0:
-    #             input_embeddings = self.get_input_embeddings().weight.data
-    #             output_embeddings = self.get_output_embeddings().weight.data
-    #
-    #             input_embeddings_avg = input_embeddings[:-num_new_tokens].mean(
-    #                 dim=0, keepdim=True)
-    #             output_embeddings_avg = output_embeddings[:-num_new_tokens].mean(
-    #                 dim=0, keepdim=True)
-    #
-    #             input_embeddings[-num_new_tokens:] = input_embeddings_avg
-    #             output_embeddings[-num_new_tokens:] = output_embeddings_avg
-    #
-    #         if model_args.tune_mm_mlp_adapter:
-    #             for p in self.get_input_embeddings().parameters():
-    #                 p.requires_grad = True
-    #             for p in self.get_output_embeddings().parameters():
-    #                 p.requires_grad = False
-    #
-    #         if model_args.pretrain_mm_mlp_adapter:
-    #             mm_projector_weights = torch.load(model_args.pretrain_mm_mlp_adapter, map_location='cpu')
-    #             embed_tokens_weight = mm_projector_weights['model.embed_tokens.weight']
-    #             assert num_new_tokens == 2
-    #             if input_embeddings.shape == embed_tokens_weight.shape:
-    #                 input_embeddings[-num_new_tokens:] = embed_tokens_weight[-num_new_tokens:]
-    #             elif embed_tokens_weight.shape[0] == num_new_tokens:
-    #                 input_embeddings[-num_new_tokens:] = embed_tokens_weight
-    #             else:
-    #                 raise ValueError(f"Unexpected embed_tokens_weight shape. Pretrained: {embed_tokens_weight.shape}. Current: {input_embeddings.shape}. Numer of new tokens: {num_new_tokens}.")
-    #     elif model_args.mm_use_im_patch_token:
-    #         if model_args.tune_mm_mlp_adapter:
-    #             for p in self.get_input_embeddings().parameters():
-    #                 p.requires_grad = False
-    #             for p in self.get_output_embeddings().parameters():
-    #                 p.requires_grad = False
-
+        return video_features    
+    
     def prepare_inputs_labels_for_multimodal(
-        self, input_ids, attention_mask, past_key_values, labels, X_modalities
+        self, input_ids, attention_mask, past_key_values, labels, X_modalities,
+        inputs_emb_modalities=None
     ):
         '''
         X_modalities [
-        [img_feature, img_feature, video_feature, audio_feature],
-        ['image', 'image', 'video', 'audio']
+            [img_feature, img_feature, video_feature, audio_feature],
+            ['image', 'image', 'video', 'audio']
+        ]
+        '''
+        Xs, keys = X_modalities
+        all_tower = self.get_all_tower(set(keys)) if len(keys) > 0 else None
+        
+        # print(2.5)
+        if all_tower is None or X_modalities[0][0] is None or input_ids.shape[1] == 1:
+            # print(past_key_values)
+            # print(input_ids)
+            if inputs_emb_modalities is not None:
+                if past_key_values is not None and all_tower is not None and Xs is not None and input_ids.shape[1] == 1:
+                    attention_mask = torch.ones((attention_mask.shape[0], past_key_values[-1][-1].shape[-2] + 1), dtype=attention_mask.dtype, device=attention_mask.device)
+                    for example_idx in range(input_ids.shape[0]):
+                        inputs_emb_modalities[example_idx].append({"text" : 1})
+                return input_ids, attention_mask, past_key_values, None, labels, inputs_emb_modalities
+            else:
+                return input_ids, attention_mask, past_key_values, None, labels, [[{"text": 1}] * input_ids.shape[0]]
+
+        # if type(images) is list or images.ndim == 5:
+        #     concat_images = torch.cat([image for image in images], dim=0)
+        #     image_features = self.encode_images(concat_images)
+        #     split_sizes = [image.shape[0] for image in images]
+        #     image_features = torch.split(image_features, split_sizes, dim=0)
+        #     image_features = [x.flatten(0, 1) for x in image_features]
+        # else:
+        print(keys)
+        X_features = [getattr(self, f'encode_{key}s')(X.unsqueeze(0)) for X, key in zip(Xs, keys)]  # expand to get batchsize
+        # X_features = []
+        # # print(2.5, *[i.shape for i in Xs], keys)  
+        # for X, key in zip(Xs, keys):
+        #     temp_X = X.unsqueeze(0)
+        #     # print(2.6)
+        #     # fn = getattr(self, f'encode_{key}s') 
+        #     if key == 'image':
+        #         out = self.encode_images(temp_X)
+        #         # print(2.65, 'image', out.shape)
+        #     elif key == 'video':
+        #         out = self.encode_videos(temp_X)
+        #         # print(2.65, 'video', out.shape)
+        #     else:
+        #         raise NameError(f'{key}')
+        #     # print(2.8, out.shape)
+        #     X_features.append(out)
+        X_features = [x.flatten(0, 1) for x in X_features]
+        # print([[j, i.shape] for i, j in zip(X_features, keys)])
+
+
+        new_input_embeds = [] # Initialize input embeddings tensor stack
+        new_input_embeds_modalities = list() # initialize modality lookup
+        new_labels = [] if labels is not None else None
+        cur_X_idx = 0 # initialize current modality index to 0
+        # print(2.9, input_ids.shape)
+        for batch_idx, cur_input_ids in enumerate(input_ids):
+            # print(f"{batch_idx=}")
+            cur_new_input_embeds_modalities = list()
+            if (torch.any(torch.stack([cur_input_ids == X_TOKEN_INDEX[key.upper()] for key in keys]), dim=0)).sum() == 0:
+                # multimodal LLM, but the current sample is not multimodal
+                # FIXME: this is a hacky fix, for deepspeed zero3 to work
+                half_len = cur_input_ids.shape[0] // 2
+                cur_X_features = X_features[cur_X_idx]
+                cur_input_embeds_1 = self.get_model().embed_tokens(cur_input_ids[:half_len])
+                cur_input_embeds_2 = self.get_model().embed_tokens(cur_input_ids[half_len:])
+                cur_input_embeds = torch.cat([cur_input_embeds_1, cur_X_features[0:0], cur_input_embeds_2], dim=0)
+                new_input_embeds.append(cur_input_embeds)
+                cur_new_input_embeds_modalities.append({"text": cur_input_embeds.shape[0]})
+                if labels is not None:
+                    new_labels.append(labels[batch_idx])
+                cur_X_idx += 1 
+                continue
+            X_token_indices = torch.where(torch.any(torch.stack([cur_input_ids == X_TOKEN_INDEX[key.upper()] for key in keys]), dim=0))[0] 
+            # find modality indices in the current tokens 
+            # print(f"{cur_input_ids=}")
+            # print(f"{X_token_indices=}")
+            cur_new_input_embeds = []
+            if labels is not None:
+                cur_labels = labels[batch_idx]
+                cur_new_labels = []
+                assert cur_labels.shape == cur_input_ids.shape
+                
+            while X_token_indices.numel() > 0: # while there is some modality token other than text
+                cur_X_features = X_features[cur_X_idx] # get embeddings for that modality
+                # print(f"{cur_X_features.shape=}") # flattened modality features
+                X_token_start = X_token_indices[0] # start the modality tokens *here*
+                if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_x_start_end', False):
+                    cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[:X_token_start-1]).detach())
+                    cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[X_token_start-1:X_token_start]))
+                    cur_new_input_embeds.append(cur_X_features)
+                    cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[X_token_start+1:X_token_start+2]))
+                    if labels is not None:
+                        cur_new_labels.append(cur_labels[:X_token_start])
+                        cur_new_labels.append(torch.full((cur_X_features.shape[0],), IGNORE_INDEX, device=labels.device, dtype=labels.dtype))
+                        cur_new_labels.append(cur_labels[X_token_start:X_token_start+1])
+                        cur_labels = cur_labels[X_token_start+2:]
+                else:
+                    # embed the chat prompt
+                    prompt_embeds = self.get_model().embed_tokens(cur_input_ids[:X_token_start])
+                    cur_new_input_embeds_modalities.append({"text": cur_input_ids[:X_token_start].shape[0]})
+                    cur_new_input_embeds.append(prompt_embeds) 
+                    cur_new_input_embeds.append(cur_X_features)
+                    cur_new_input_embeds_modalities.append({X_INDEX_TOKEN[cur_input_ids[X_token_start].cpu().item()].lower() : cur_X_features.shape[0]})
+                    
+                    # append chat prompt and modality features to the tensor stack
+                    if labels is not None:
+                        cur_new_labels.append(cur_labels[:X_token_start])
+                        cur_new_labels.append(torch.full((cur_X_features.shape[0],), IGNORE_INDEX, device=labels.device, dtype=labels.dtype))
+                        cur_labels = cur_labels[X_token_start+1:]
+                # move to the next modality
+                cur_X_idx += 1
+                if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_x_start_end', False):
+                    cur_input_ids = cur_input_ids[X_token_start+2:]
+                else:
+                    # now process the remaining tokens
+                    cur_input_ids = cur_input_ids[X_token_start+1:] 
+                X_token_indices = torch.where(torch.any(torch.stack([cur_input_ids == X_TOKEN_INDEX[key.upper()] for key in keys]), dim=0))[0]
+                # print(f"{X_token_indices=}")
+
+            if cur_input_ids.numel() > 0:
+                # All modalities are done, parse remaining tokens
+                if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_x_start_end', False):
+                    cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids).detach())
+                else:
+                    cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids))
+                    cur_new_input_embeds_modalities.append({"text": cur_input_ids[:X_token_start].shape[0]})
+
+                if labels is not None:
+                    cur_new_labels.append(cur_labels)
+                    
+            ######## DEBUG START 
+            # for idx, elem in enumerate(cur_new_input_embeds):
+            #     print(f"{idx}th elem shape: {elem.shape}")
+            ######## DEBUG END 
+            
+            cur_new_input_embeds = [x.to(device=self.device) for x in cur_new_input_embeds] 
+            cur_new_input_embeds = torch.cat(cur_new_input_embeds, dim=0)
+            new_input_embeds.append(cur_new_input_embeds)
+            new_input_embeds_modalities.append(cur_new_input_embeds_modalities)
+            if labels is not None:
+                cur_new_labels = torch.cat(cur_new_labels, dim=0)
+                new_labels.append(cur_new_labels)
+
+        
+        
+        if any(x.shape != new_input_embeds[0].shape for x in new_input_embeds):
+            # check for embed shape mismatch and pad with zeros (WHAT???)
+            max_len = max(x.shape[0] for x in new_input_embeds)
+
+            new_input_embeds_align = []
+            for cur_new_embed in new_input_embeds:
+                cur_new_embed = torch.cat((cur_new_embed, torch.zeros((max_len - cur_new_embed.shape[0], cur_new_embed.shape[1]), dtype=cur_new_embed.dtype, device=cur_new_embed.device)), dim=0)
+                new_input_embeds_align.append(cur_new_embed)
+            new_input_embeds = torch.stack(new_input_embeds_align, dim=0)
+
+            if labels is not None:
+                new_labels_align = []
+                _new_labels = new_labels
+                for cur_new_label in new_labels:
+                    cur_new_label = torch.cat((cur_new_label, torch.full((max_len - cur_new_label.shape[0],), IGNORE_INDEX, dtype=cur_new_label.dtype, device=cur_new_label.device)), dim=0)
+                    new_labels_align.append(cur_new_label)
+                new_labels = torch.stack(new_labels_align, dim=0)
+
+            if attention_mask is not None:
+                new_attention_mask = []
+                for cur_attention_mask, cur_new_labels, cur_new_labels_align in zip(attention_mask, _new_labels, new_labels):
+                    new_attn_mask_pad_left = torch.full((cur_new_labels.shape[0] - labels.shape[1],), True, dtype=attention_mask.dtype, device=attention_mask.device)
+                    new_attn_mask_pad_right = torch.full((cur_new_labels_align.shape[0] - cur_new_labels.shape[0],), False, dtype=attention_mask.dtype, device=attention_mask.device)
+                    cur_new_attention_mask = torch.cat((new_attn_mask_pad_left, cur_attention_mask, new_attn_mask_pad_right), dim=0)
+                    new_attention_mask.append(cur_new_attention_mask)
+                attention_mask = torch.stack(new_attention_mask, dim=0)
+                assert attention_mask.shape == new_labels.shape
+        else:
+            # Stack the tensor stack
+            new_input_embeds = torch.stack(new_input_embeds, dim=0)
+            if labels is not None:
+                new_labels  = torch.stack(new_labels, dim=0)
+
+            if attention_mask is not None:
+                new_attn_mask_pad_left = torch.full((attention_mask.shape[0], new_input_embeds.shape[1] - input_ids.shape[1]), True, dtype=attention_mask.dtype, device=attention_mask.device)
+                attention_mask = torch.cat((new_attn_mask_pad_left, attention_mask), dim=1)
+                assert attention_mask.shape == new_input_embeds.shape[:2]
+            
+            # print(f"{new_input_embeds.shape=}")
+            # print(f"{attention_mask.shape=}")
+            # print(f"{attention_mask[0]=}")
+        # print(new_input_embeds_modalities)
+        return None, attention_mask, past_key_values, new_input_embeds, new_labels, new_input_embeds_modalities
+    
+    def prepare_inputs_labels_for_multimodal_old(
+        self, input_ids, attention_mask, past_key_values, labels, X_modalities, 
+    ):
+        '''
+        X_modalities [
+            [img_feature, img_feature, video_feature, audio_feature],
+            ['image', 'image', 'video', 'audio']
         ]
         '''
         Xs, keys = X_modalities
@@ -344,12 +375,12 @@ class LlavaMetaForCausalLM(ABC):
         # print([[j, i.shape] for i, j in zip(X_features, keys)])
 
 
-        new_input_embeds = []
+        new_input_embeds = [] # Initialize input embeddings tensor stack
         new_labels = [] if labels is not None else None
-        cur_X_idx = 0
+        cur_X_idx = 0 # initialize current modality index to 0
         # print(2.9, input_ids.shape)
         for batch_idx, cur_input_ids in enumerate(input_ids):
-            # print(333333)
+            # print(f"{batch_idx=}")
             if (torch.any(torch.stack([cur_input_ids == X_TOKEN_INDEX[key.upper()] for key in keys]), dim=0)).sum() == 0:
                 # multimodal LLM, but the current sample is not multimodal
                 # FIXME: this is a hacky fix, for deepspeed zero3 to work
@@ -364,15 +395,19 @@ class LlavaMetaForCausalLM(ABC):
                 cur_X_idx += 1 
                 continue
             X_token_indices = torch.where(torch.any(torch.stack([cur_input_ids == X_TOKEN_INDEX[key.upper()] for key in keys]), dim=0))[0] 
+            # find modality indices in the current tokens 
+            # print(f"{cur_input_ids=}")
+            # print(f"{X_token_indices=}")
             cur_new_input_embeds = []
             if labels is not None:
                 cur_labels = labels[batch_idx]
                 cur_new_labels = []
                 assert cur_labels.shape == cur_input_ids.shape
-            # print(4444444444)
-            while X_token_indices.numel() > 0:
-                cur_X_features = X_features[cur_X_idx]
-                X_token_start = X_token_indices[0]
+                
+            while X_token_indices.numel() > 0: # while there is some modality token other than text
+                cur_X_features = X_features[cur_X_idx] # get embeddings for that modality
+                # print(f"{cur_X_features.shape=}") # flattened modality features
+                X_token_start = X_token_indices[0] # start the modality tokens *here*
                 if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_x_start_end', False):
                     cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[:X_token_start-1]).detach())
                     cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[X_token_start-1:X_token_start]))
@@ -384,27 +419,35 @@ class LlavaMetaForCausalLM(ABC):
                         cur_new_labels.append(cur_labels[X_token_start:X_token_start+1])
                         cur_labels = cur_labels[X_token_start+2:]
                 else:
-                    cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids[:X_token_start])) 
+                    # embed the chat prompt
+                    prompt_embeds = self.get_model().embed_tokens(cur_input_ids[:X_token_start])
+                    cur_new_input_embeds.append(prompt_embeds) 
                     cur_new_input_embeds.append(cur_X_features)
+                    # append chat prompt and modality features to the tensor stack
                     if labels is not None:
                         cur_new_labels.append(cur_labels[:X_token_start])
                         cur_new_labels.append(torch.full((cur_X_features.shape[0],), IGNORE_INDEX, device=labels.device, dtype=labels.dtype))
                         cur_labels = cur_labels[X_token_start+1:]
+                # move to the next modality
                 cur_X_idx += 1
                 if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_x_start_end', False):
                     cur_input_ids = cur_input_ids[X_token_start+2:]
                 else:
+                    # now process the remaining tokens
                     cur_input_ids = cur_input_ids[X_token_start+1:] 
                 X_token_indices = torch.where(torch.any(torch.stack([cur_input_ids == X_TOKEN_INDEX[key.upper()] for key in keys]), dim=0))[0]
-            
-            # print(55555555555555555)
+                # print(f"{X_token_indices=}")
+
             if cur_input_ids.numel() > 0:
+                # All modalities are done, parse remaining tokens
                 if getattr(self.config, 'tune_mm_mlp_adapter', False) and getattr(self.config, 'mm_use_x_start_end', False):
                     cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids).detach())
                 else:
                     cur_new_input_embeds.append(self.get_model().embed_tokens(cur_input_ids))
                 if labels is not None:
                     cur_new_labels.append(cur_labels)
+            # for idx, elem in enumerate(cur_new_input_embeds):
+            #     print(f"{idx}th elem shape: {elem.shape}")
             cur_new_input_embeds = [x.to(device=self.device) for x in cur_new_input_embeds] 
             cur_new_input_embeds = torch.cat(cur_new_input_embeds, dim=0)
             new_input_embeds.append(cur_new_input_embeds)
@@ -412,7 +455,10 @@ class LlavaMetaForCausalLM(ABC):
                 cur_new_labels = torch.cat(cur_new_labels, dim=0)
                 new_labels.append(cur_new_labels)
 
+        
+        
         if any(x.shape != new_input_embeds[0].shape for x in new_input_embeds):
+            # check for embed shape mismatch and pad with zeros (WHAT???)
             max_len = max(x.shape[0] for x in new_input_embeds)
 
             new_input_embeds_align = []
@@ -439,6 +485,7 @@ class LlavaMetaForCausalLM(ABC):
                 attention_mask = torch.stack(new_attention_mask, dim=0)
                 assert attention_mask.shape == new_labels.shape
         else:
+            # Stack the tensor stack
             new_input_embeds = torch.stack(new_input_embeds, dim=0)
             if labels is not None:
                 new_labels  = torch.stack(new_labels, dim=0)
@@ -447,7 +494,10 @@ class LlavaMetaForCausalLM(ABC):
                 new_attn_mask_pad_left = torch.full((attention_mask.shape[0], new_input_embeds.shape[1] - input_ids.shape[1]), True, dtype=attention_mask.dtype, device=attention_mask.device)
                 attention_mask = torch.cat((new_attn_mask_pad_left, attention_mask), dim=1)
                 assert attention_mask.shape == new_input_embeds.shape[:2]
-
+            
+            # print(f"{new_input_embeds.shape=}")
+            # print(f"{attention_mask.shape=}")
+            # print(f"{attention_mask[0]=}")
         return None, attention_mask, past_key_values, new_input_embeds, new_labels
 
     def initialize_X_tokenizer(self, model_args, tokenizer):
