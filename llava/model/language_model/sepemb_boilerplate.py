@@ -13,20 +13,13 @@ from transformers import AutoConfig, AutoModelForCausalLM, \
 
 from transformers.models.llama.modeling_llama import LlamaDynamicNTKScalingRotaryEmbedding,\
     LlamaLinearScalingRotaryEmbedding, LlamaRotaryEmbedding, repeat_kv, LlamaAttention,\
-    LLAMA_ATTENTION_CLASSES, LlamaMLP, LlamaFlashAttention2, LlamaSdpaAttention
+    LlamaMLP
 
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
 from ..llava_arch import LlavaMetaModel, LlavaMetaForCausalLM
 
 import warnings
-
-
-LLAMA_ATTENTION_CLASSES = {
-    "eager": LlamaAttention,
-    "flash_attention_2": LlamaFlashAttention2,
-    "sdpa": LlamaSdpaAttention,
-}
 
 
 def rotate_half(x):
@@ -63,72 +56,99 @@ def apply_rotary_pos_emb(q, k, cos, sin, position_ids, unsqueeze_dim=1):
     return q_embed, k_embed
 
 
-class SepEmbLlamaAttention(nn.Module):
-    """Multi-headed attention from 'Attention Is All You Need' paper"""
+class SepEmbLlamaAttention(LlamaAttention):
+    """Multi-headed attention from 'Attention Is All You Need' paper""" 
 
-    def __init__(self, config: LlamaConfig, layer_idx: Optional[int] = None):
-        super().__init__()
-        self.config = config
-        self.layer_idx = layer_idx
-        if layer_idx is None:
-            print(
-                f"Instantiating {self.__class__.__name__} without passing a `layer_idx` is not recommended and will "
-                "lead to errors during the forward call if caching is used. Please make sure to provide a `layer_idx` "
-                "when creating this class."
-            )
-
-        self.attention_dropout = config.attention_dropout
-        self.hidden_size = config.hidden_size
-        self.num_heads = config.num_attention_heads
-        self.head_dim = self.hidden_size // self.num_heads
-        self.num_key_value_heads = config.num_key_value_heads
-        self.num_key_value_groups = self.num_heads // self.num_key_value_heads
-        self.max_position_embeddings = config.max_position_embeddings
-        self.rope_theta = config.rope_theta
-        self.is_causal = True
-
-        if (self.head_dim * self.num_heads) != self.hidden_size:
-            raise ValueError(
-                f"hidden_size must be divisible by num_heads (got `hidden_size`: {self.hidden_size}"
-                f" and `num_heads`: {self.num_heads})."
-            )
-
-        self.q_proj = nn.Linear(self.hidden_size, self.num_heads * self.head_dim, bias=config.attention_bias)
-        self.k_proj = nn.Linear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=config.attention_bias)
-        self.v_proj = nn.Linear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=config.attention_bias)
-        self.o_proj = nn.Linear(self.num_heads * self.head_dim, self.hidden_size, bias=config.attention_bias)
-        self._init_rope()
-
-    def _init_rope(self):
+    def _init_multimodal_rope(self):
+        # one rope for each modality: image, video, text
         if self.config.rope_scaling is None:
-            self.rotary_emb = LlamaRotaryEmbedding(
+            self.image_rotary_emb = LlamaRotaryEmbedding(
                 self.head_dim,
                 max_position_embeddings=self.max_position_embeddings,
-                base=self.rope_theta,
+                base=10000.0,
+            )
+            self.video_rotary_emb = LlamaRotaryEmbedding(
+                self.head_dim,
+                max_position_embeddings=self.max_position_embeddings,
+                base=10000.0,
+            )
+            self.text_rotary_emb = LlamaRotaryEmbedding(
+                self.head_dim,
+                max_position_embeddings=self.max_position_embeddings,
+                base=10000.0,
             )
         else:
             scaling_type = self.config.rope_scaling["type"]
             scaling_factor = self.config.rope_scaling["factor"]
             if scaling_type == "linear":
-                self.rotary_emb = LlamaLinearScalingRotaryEmbedding(
+                self.image_rotary_emb = LlamaLinearScalingRotaryEmbedding(
                     self.head_dim,
                     max_position_embeddings=self.max_position_embeddings,
                     scaling_factor=scaling_factor,
-                    base=self.rope_theta,
+                    base=10000.0,
+                )
+                self.video_rotary_emb = LlamaLinearScalingRotaryEmbedding(
+                    self.head_dim,
+                    max_position_embeddings=self.max_position_embeddings,
+                    scaling_factor=scaling_factor,
+                    base=10000.0,
+                )
+                self.text_rotary_emb = LlamaLinearScalingRotaryEmbedding(
+                    self.head_dim,
+                    max_position_embeddings=self.max_position_embeddings,
+                    scaling_factor=scaling_factor,
+                    base=10000.0,
                 )
             elif scaling_type == "dynamic":
-                self.rotary_emb = LlamaDynamicNTKScalingRotaryEmbedding(
+                self.image_rotary_emb = LlamaDynamicNTKScalingRotaryEmbedding(
                     self.head_dim,
                     max_position_embeddings=self.max_position_embeddings,
                     scaling_factor=scaling_factor,
-                    base=self.rope_theta,
+                    base=10000.0,
+                )
+                self.video_rotary_emb = LlamaDynamicNTKScalingRotaryEmbedding(
+                    self.head_dim,
+                    max_position_embeddings=self.max_position_embeddings,
+                    scaling_factor=scaling_factor,
+                    base=10000.0,
+                )
+                self.text_rotary_emb = LlamaDynamicNTKScalingRotaryEmbedding(
+                    self.head_dim,
+                    max_position_embeddings=self.max_position_embeddings,
+                    scaling_factor=scaling_factor,
+                    base=10000.0,
                 )
             else:
                 raise ValueError(f"Unknown RoPE scaling type {scaling_type}")
 
-    def _shape(self, tensor: torch.Tensor, seq_len: int, bsz: int):
-        return tensor.view(bsz, seq_len, self.num_heads, self.head_dim).transpose(1, 2).contiguous()
+    def _calculate_modality_masks(self, attn_weights):
+        
+        # bsz, num_heads, q_len, kv_len = attn_weights.size()
+        
+        image_attn_mask = torch.zeros_like(attn_weights)[:, 0, ...]
+        video_attn_mask = torch.zeros_like(attn_weights)[:, 0, ...]
+        text_attn_mask = torch.zeros_like(attn_weights)[:, 0, ...]
+        
+        mask_map = dict(
+            text=text_attn_mask,
+            image=image_attn_mask,
+            video=video_attn_mask
+        )
+        
+        modalities_buffer = SepEmbLlamaAttention.inputs_emb_modalities
+        # List[List[Dict['modality': num_tokens]]]
+        
+        for example_idx in range(len(modalities_buffer)):
+            example_buffer = modalities_buffer[example_idx]
+            running_tok_idx = 0
+            for chunk_idx in range(len(example_buffer)):
+                chunk_modality = example_buffer[chunk_idx].keys()[0]
+                chunk_tokens = example_buffer[chunk_idx].values()[0]
+                mask_map[chunk_modality][..., running_tok_idx + chunk_tokens] = 1
+                running_tok_idx += chunk_tokens
 
+        return image_attn_mask, video_attn_mask, text_attn_mask
+    
     def forward(
         self,
         hidden_states: torch.Tensor,
@@ -192,6 +212,13 @@ class SepEmbLlamaAttention(nn.Module):
         value_states = repeat_kv(value_states, self.num_key_value_groups)
 
         attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
+        
+        img_mask, video_mask, text_mask = self._calculate_modality_masks(attn_weights)
+        
+        print(video_mask[0, 0, :50])
+        print(text_mask[0, 0, :50])
+        
+        raise ValueError()
 
         if attn_weights.size() != (bsz, self.num_heads, q_len, kv_seq_len):
             raise ValueError(

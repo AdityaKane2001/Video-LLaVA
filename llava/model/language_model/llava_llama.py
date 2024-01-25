@@ -19,7 +19,7 @@ import torch.nn as nn
 from torch.nn import functional as F
 from torch.nn import CrossEntropyLoss
 
-from sepemb_boilerplate import SepEmbLlamaAttention
+# from .sepemb_boilerplate import SepEmbLlamaAttention
 
 import math
 
@@ -27,7 +27,7 @@ from transformers import AutoConfig, AutoModelForCausalLM, \
                          LlamaConfig, LlamaModel, LlamaForCausalLM
 
 from transformers.models.llama.modeling_llama import LlamaDynamicNTKScalingRotaryEmbedding,\
-    LlamaLinearScalingRotaryEmbedding, LlamaRotaryEmbedding, repeat_kv, LlamaAttention
+    LlamaLinearScalingRotaryEmbedding, LlamaRotaryEmbedding, repeat_kv, LlamaAttention, SepEmb2LlamaAttention
 
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
@@ -196,7 +196,7 @@ class LlavaLlamaForCausalLM(LlamaForCausalLM, LlavaMetaForCausalLM):
         
         input_ids, attention_mask, past_key_values, inputs_embeds, labels, inputs_emb_modalities = self.prepare_inputs_labels_for_multimodal(input_ids, attention_mask, past_key_values, labels, images, inputs_emb_modalities=self.inputs_emb_modalities)
         self.inputs_emb_modalities = inputs_emb_modalities
-        SepEmbLlamaAttention.inputs_emb_modalities = inputs_emb_modalities
+        SepEmb2LlamaAttention.inputs_emb_modalities = inputs_emb_modalities
         # input_ids已经没了，因为text已经融合到inputs_embeds里面：前text+img+后text，总共大几百个token
         # 之后的input_ids是上一轮预测得token，图片和之前得文本信息融到past_key_values
         # decoder outputs consists of (dec_features, layer_state, dec_hidden, dec_attn)
@@ -267,10 +267,7 @@ class LlavaLlamaForCausalLM(LlamaForCausalLM, LlavaMetaForCausalLM):
         )
         return model_inputs
 
-# Monkey-patch seperable embedding attention
-for module in LlavaLlamaForCausalLM.modules():
-    if isinstance(module, LlamaAttention):
-        module = SepEmbLlamaAttention
+
 
 
 

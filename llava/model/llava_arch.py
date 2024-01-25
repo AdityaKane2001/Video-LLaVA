@@ -149,7 +149,6 @@ class LlavaMetaForCausalLM(ABC):
         
         # print(2.5)
         if all_tower is None or X_modalities[0][0] is None or input_ids.shape[1] == 1:
-            # print(past_key_values)
             # print(input_ids)
             if inputs_emb_modalities is not None:
                 if past_key_values is not None and all_tower is not None and Xs is not None and input_ids.shape[1] == 1:

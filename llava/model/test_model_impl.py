@@ -2,11 +2,16 @@ import torch
 from llava.constants import X_TOKEN_INDEX, DEFAULT_X_TOKEN
 from llava.conversation import conv_templates, SeparatorStyle
 from llava.model.builder import load_pretrained_model
+from transformers.models.llama.modeling_llama import LlamaAttention, LlamaDecoderLayer
 from llava.utils import disable_torch_init
 from llava.mm_utils import tokenizer_X_token, get_model_name_from_path, KeywordsStoppingCriteria
-
+# from llava.model.language_model.sepemb_boilerplate import SepEmbLlamaAttention
 # from torchview import draw_graph
+import transformers
 
+transformers.utils.logging.set_verbosity_error()
+
+torch.set_warn_always(False)
 
 def main():
     disable_torch_init()
@@ -17,6 +22,7 @@ def main():
     load_4bit, load_8bit = True, False
     model_name = get_model_name_from_path(model_path)
     tokenizer, model, processor, context_len = load_pretrained_model(model_path, None, model_name, load_8bit, load_4bit, device=device)
+
     video_processor = processor['video']
     conv_mode = "llava_v1"
     conv = conv_templates[conv_mode].copy()
@@ -34,18 +40,14 @@ def main():
     conv.append_message(conv.roles[0], inp)
     conv.append_message(conv.roles[1], None)
     prompt = conv.get_prompt()
+    
     print(f"{prompt=}")
+    
     input_ids = tokenizer_X_token(prompt, tokenizer, X_TOKEN_INDEX['VIDEO'], return_tensors='pt').unsqueeze(0).cuda()
-    print(f"{input_ids=}")
     stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
     keywords = [stop_str]
     stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
     
-    
-    # input_ids = input_ids.repeat([3, 1])
-    # tensor = tensor.repeat([3, 1, 1, 1, 1])
-    # print(f"{input_ids.shape=}")
-    # print(f"{tensor.shape=}")
     with open("model_arch.out", "a+") as f:
         f.write(str(model))
         
@@ -63,4 +65,5 @@ def main():
     print(outputs)
 
 if __name__ == '__main__':
+    
     main()

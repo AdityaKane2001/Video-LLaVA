@@ -1,0 +1,24 @@
+###### Unmodified LlamaAttention: ##################################
+The video is funny because the baby is trying to read a book 
+while sitting on the bed, and he is making funny faces and sounds. 
+The baby's actions are amusing and entertaining to watch.</s>
+
+###### Change #1: Added initialization of multimodal inputs, no change to forward ########
+The video is funny because the baby is trying to read a book, 
+but he is not able to read it properly. He is pointing at the book and 
+making funny faces, which adds to the humor of the video.</s>
+
+###### Change #2: Added _calculate* method to class, no change to forward ########
+The video is funny because the baby is trying to read a book
+while sitting on the bed, and he is not able to read it properly. 
+He is pointing to different parts of the book, and he is also trying
+to put the book on his face. The baby's actions are amusing and adorable, 
+making the video entertaining to watch.</s>
+
+###### Change #3: Preponed KV cache lookup to before adding RoPE ########
+The video is funny because the baby is trying to read a book
+while sitting on the bed, and he is not able to do it properly. 
+He is pointing to the book and looking at the camera, which adds to the humor 
+of the situation.</s>
+
+##### Change #4: 
