@@ -3,6 +3,12 @@ The video is funny because the baby is trying to read a book
 while sitting on the bed, and he is making funny faces and sounds. 
 The baby's actions are amusing and entertaining to watch.</s>
 
+With seed 42: The video is funny because the baby is trying to read a book while sitting on the bed, 
+and he is pointing to different parts of the book. The baby's actions are amusing because 
+he is not able to read the book properly, and he is pointing to random parts of the book. 
+The video captures the innocence and curiosity of a young child, and it is heartwarming 
+to see the baby's attempts to make sense of the book.</s>
+
 ###### Change #1: Added initialization of multimodal inputs, no change to forward ########
 The video is funny because the baby is trying to read a book, 
 but he is not able to read it properly. He is pointing at the book and 
@@ -21,4 +27,76 @@ while sitting on the bed, and he is not able to do it properly.
 He is pointing to the book and looking at the camera, which adds to the humor 
 of the situation.</s>
 
-##### Change #4: 
+With seed 42: The video is funny because the baby is trying to read a book while sitting on the bed, 
+and he is pointing to different parts of the book. The baby's actions are amusing because 
+he is not able to read the book properly, and he is pointing to random parts of the book. 
+The video captures the innocence and curiosity of a young child, and it is heartwarming 
+to see the baby's attempts to make sense of the book.</s>
+
+
+###### Change #4: Added position-wise rotary embeddings for each modality ######
+
+# no rotary embs
+nobody, and a little girl reading a little girl reading a bookshirt.</s>
+
+# all modalities rotary embs
+and.</s> 
+
+# only text rotary embs
+. and. and. and. and. and. and. and. and. and. and. and.. and. and.. and. and...,,. and. and, and, and, and, and and, and, and, and, and, and and, and,. and and and. and. and.,,.....,...... and..., and,...........,.. and.. and.,. and.,, and.....,..........,...,.. and. and., and and. and. and. and and, and, and and and and and, and and, and, and,, and, and, and. and, and....,.. and..................... and.... and and and and and and and and and and and, and and and, and and and and and and and and and. and and in. and in. and in. in in in in in in in in in in in in in in in and in and in and and and and and in and and and and in in. and in and in in in and in in in in in. and in in. in in in in in in in in in in in in in. and. and and and and and and and and and and and and, and and and and. and and and and in. and in in in in in. in in in in in in in in in the in in in in the in the in in in in in in in and and and and and and and and and and and and and and and and in. and. and in in in in. in in in. and in in in in in in., in the in the in the in the in the in the. and in the and and and and and and and and and. and in the. and in the. and in the. The in the in the. The in the. The. The. The in a. The. The man's. The man's. The woman is laying in the room. The woman's. The. The man in the. The. The.. and and and in and in and and and in the in. in the on the in the in the in the in... and in the. and. and. and. and, and in the. The, and in the. The. The. The (and. The. The mother. The woman's. The woman's. The woman's. The woman is seen. The baby. The woman' (and. The girl and the man and the. The and and and. and and and and and and. and. (and. The. The boy. The boy. The boy's. The boy. The baby. The little girl's. Theo. The man in the room, and the man's. The little girl's. Theo. The mom and dad is holding a camera phone.</s>
+
+# only video rotary embs
+The baby
+The baby
+The baby
+The baby, the baby, the baby, the baby, the baby, who is sleeping and the baby, 
+the camera, and the camera, and the camera, the camera, the camera, and the camera,
+and the camera, and the camera, and the camera, and the camera, and the camera,
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera,
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+and the camera, and the camera, and the camera, and the camera, and the camera, 
+the camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, the camera, and the camera, and the camera, and the camera, and the 
+camera, and the camera, the camera, and the camera, and the camera, and the 
+camera, and the camera, and the camera, and the camera, and the camera, and the 
+camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, and the camera, and the camera, and the camera, and the camera, and the 
+camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, the camera, and the camera, and the camera, and the camera, and the 
+camera, and the camera, and the camera, the camera, and the camera, and the 
+camera, and the camera, and the camera, and the camera, and the camera, and the 
+camera, and the camera, and the little, and the camera, and the camera, and 
+the camera, and the camera, and the camera, and the camera, and the person is on
+the camera, and the camera, and the camera, and the camera, and the camera, and 
+the camera, and the girl, and the camera, and the girl, and the camera, 
+and the camera, and the camera, and the girl, the camera, and the girl, and the 
+girl, and the girl, and the camera, and the girl, and the girl, and the girl, 
+and the girl, and the camera, and the girl, and the girl, and the girl, and the 
+girl, and the girl, and the girl, the girl, and the little, and the girl, and 
+the camera, and the girl, and the camera, and the girl, and the girl, and the girl, 
+and the girl, the camera, the girl, the girl, and the girl, the girl, and the girl, 
+and the girl, and the girl, and the camera, and the girl, and the girl, and the 
+camera, and the girl, and the girl, and the girl, and the girl, and the girl, 
+and the girl, and the girl, and the girl, the girl, and the
+

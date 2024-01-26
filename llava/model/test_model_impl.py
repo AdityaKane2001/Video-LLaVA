@@ -8,13 +8,14 @@ from llava.mm_utils import tokenizer_X_token, get_model_name_from_path, Keywords
 # from llava.model.language_model.sepemb_boilerplate import SepEmbLlamaAttention
 # from torchview import draw_graph
 import transformers
+transformers.set_seed(42)
 
 transformers.utils.logging.set_verbosity_error()
 
 torch.set_warn_always(False)
 
 def main():
-    disable_torch_init()
+    disable_torch_init()    
     video = '/workspace/akane/Video-LLaVA/llava/serve/examples/sample_demo_1.mp4'
     inp = 'Why is this video funny?'
     model_path = 'LanguageBind/Video-LLaVA-7B'
