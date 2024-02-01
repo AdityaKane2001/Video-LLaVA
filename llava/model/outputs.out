@@ -27,12 +27,12 @@ while sitting on the bed, and he is not able to do it properly.
 He is pointing to the book and looking at the camera, which adds to the humor 
 of the situation.</s>
 
-With seed 42: The video is funny because the baby is trying to read a book while sitting on the bed, 
+With seed 42: 
+The video is funny because the baby is trying to read a book while sitting on the bed, 
 and he is pointing to different parts of the book. The baby's actions are amusing because 
 he is not able to read the book properly, and he is pointing to random parts of the book. 
 The video captures the innocence and curiosity of a young child, and it is heartwarming 
 to see the baby's attempts to make sense of the book.</s>
-
 
 ###### Change #4: Added position-wise rotary embeddings for each modality ######
 
@@ -100,3 +100,16 @@ and the girl, and the girl, and the camera, and the girl, and the girl, and the
 camera, and the girl, and the girl, and the girl, and the girl, and the girl, 
 and the girl, and the girl, and the girl, the girl, and the
 
+######## Change #5: Keep text rotary embeddings as per the entire seq len, 
+    use different embeddings set for video ##########
+
+# text full-length embs, video has video-length embs
+The video is funny because the baby is trying to read a book while sitting on the bed, 
+and he is pointing to different parts of the book. The baby's actions are amusing because 
+he is not able to read the book properly, and he is pointing to random parts of the book. 
+The video captures the innocence and curiosity of a young child, and it is heartwarming 
+to see the baby's attempts to understand the book.</s>
+
+# text full-length embs, video no embs
+This video is funny because it shows a little boy reading a book while laying in bed. 
+He puts nobody nobody nobody nobody.</s>
