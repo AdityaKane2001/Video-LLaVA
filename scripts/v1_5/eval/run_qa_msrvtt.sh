@@ -1,5 +1,3 @@
-
-
 CKPT_NAME="Video-LLaVA-7B"
 model_path="checkpoints/${CKPT_NAME}"
 cache_dir="./cache_dir"

@@ -93095,3 +93095,158 @@ ASSISTANT: Why is this video funny?
 prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
 ['video']
 The video is funny because the baby is trying to read a book while sitting on the bed, and he is pointing to different parts of the book. The baby's actions are amusing because he is not able to read the book properly, and he is pointing to random parts of the book. The video captures the innocence and curiosity of a young child, and it is heartwarming to see the baby's attempts to understand the book.</s>
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+nobody, and a little girl reading a little girl reading a bookshirt.</s>
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]
+Loading checkpoint shards:  50%|█████     | 1/2 [00:08<00:08,  8.12s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:11<00:00,  5.52s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:11<00:00,  5.91s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+The video is funny because the baby is trying to read a book while sitting on the bed, and he is pointing to different parts of the book. The baby's actions are amusing because he is not able to read the book properly, and he is pointing to random parts of the book. The video captures the innocence and curiosity of a young child, and it is heartwarming to see the baby's attempts to understand the book.</s>
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]
+Loading checkpoint shards:  50%|█████     | 1/2 [00:09<00:09,  9.26s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:13<00:00,  6.32s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:13<00:00,  6.76s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+The video is funny because the baby is trying to read a book while sitting on the bed, and he is pointing to different parts of the book. The baby's actions are amusing because he is not able to read the book properly, and he is pointing to random parts of the book. The video captures the innocence and curiosity of a young child, and it is heartwarming to see the baby's attempts to make sense of the book.</s>
+
+
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:08<00:08,  8.07s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:11<00:00,  5.26s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:11<00:00,  5.68s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+The video is funny because the baby is trying to read a book while sitting on the bed, and he is pointing to different parts of the book. The baby's actions are amusing because he is not able to read the book properly, and he is pointing to random parts of the book. The video captures the innocence and curiosity of a young child, and it is heartwarming to see the baby's attempts to make sense of the book.</s>
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.67s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.04s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.43s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+nobody, and a little girl reading a little girl reading a bookshirt.</s>
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.55s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  4.94s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.33s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+Traceback (most recent call last):
+  File "/home/akane38/Video-LLaVA/llava/model/test_model_impl.py", line 70, in <module>
+    main()
+  File "/home/akane38/Video-LLaVA/llava/model/test_model_impl.py", line 56, in main
+    output_ids = model.generate(
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/akane38/Video-LLaVA/transformers/src/transformers/generation/utils.py", line 1588, in generate
+    return self.sample(
+  File "/home/akane38/Video-LLaVA/transformers/src/transformers/generation/utils.py", line 2642, in sample
+    outputs = self(
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/accelerate/hooks.py", line 165, in new_forward
+    output = old_forward(*args, **kwargs)
+  File "/home/akane38/Video-LLaVA/llava/model/language_model/llava_llama.py", line 206, in forward
+    outputs = self.model(
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/akane38/Video-LLaVA/transformers/src/transformers/models/llama/modeling_llama.py", line 1206, in forward
+    layer_outputs = decoder_layer(
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/accelerate/hooks.py", line 165, in new_forward
+    output = old_forward(*args, **kwargs)
+  File "/home/akane38/Video-LLaVA/transformers/src/transformers/models/llama/modeling_llama.py", line 921, in forward
+    hidden_states, self_attn_weights, present_key_value = self.self_attn(
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/accelerate/hooks.py", line 165, in new_forward
+    output = old_forward(*args, **kwargs)
+  File "/home/akane38/Video-LLaVA/transformers/src/transformers/models/llama/modeling_llama.py", line 590, in forward
+    final_cos[:, :, text_mask[0] > 0, :] = text_cos[:, :, text_mask[0] > 0, :].half()
+IndexError: The shape of the mask [2097] at index 0 does not match the shape of the indexed tensor [1, 1, 49, 128] at index 2
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.99s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:11<00:00,  5.31s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:11<00:00,  5.71s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+and.</s>
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.66s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.06s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.45s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+. and. and. and. and. and. and. and. and. and. and. and.. and. and.. and. and...,.. and. and, and, and, and, and and, and, and, and, and, and and, and,. and and and. and. and.,,.....,...... and..., and,...........,.. and.. and.,. and.,, and.....,..........,.... and. and. and., and and. and. and. and and, and, and and and and and, and and, and and,, and, and,, and. and, and....,.. and................... and. and.... and and and and and and and and and and and, and and and, and and and and and and and and and. and and in. and. and in in. in in in in in in in in in in in in in in in and in and in and and and and and in and and and and in in. and in and in in in and in in in in in. and in in. in in in in in in in in in in in in in. and. and and and and and and and and and and and and, and and and and. and and and and in. and in in in in in. in in in in in in in in in the in in in in the in the in in in in in in in and and and and and and and and and and and and and and and and in. and. and in in in in. in in in. and in in in in in in., in the in the in the in the in the in the. and in the and and and and and and and and and in. and in the. and in the in the. and in the in the. The in the. The in the. The. The. The. The. The man in the. The man's. The woman's. The woman's. The woman's. The man in the. The. The in the and and and in and in and and and in the in. in the on the in the in the in the in... and in the. and. and. and. and, and in the. The, and in the. The. The. The (and. The. The mother. The woman's. The woman's. The woman's. The woman is seen. The baby. The woman' (and. The girl and the man and the. The and and and. and and and and and and. and. The. The. The boy. The boy. The boy's's. Theo. The woman is watching and the baby. Theo. The man in the room, and the man's. The little girl's. Theo. The mom and dad is holding a camera phone.</s>
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_functional_video.py:6: UserWarning: The 'torchvision.transforms._functional_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms.functional' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/_transforms_video.py:22: UserWarning: The 'torchvision.transforms._transforms_video' module is deprecated since 0.12 and will be removed in the future. Please use the 'torchvision.transforms' module instead.
+  warnings.warn(
+/home/akane38/miniconda3/envs/vllava/lib/python3.10/site-packages/torchvision/transforms/functional_tensor.py:5: UserWarning: The torchvision.transforms.functional_tensor module is deprecated in 0.15 and will be **removed in 0.17**. Please don't rely on it. You probably just need to use APIs in torchvision.transforms.functional or in torchvision.transforms.v2.functional.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.31s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.08s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.42s/it]
+
+['Video', 'Image']
+ASSISTANT: Why is this video funny?
+prompt="A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <video>\nWhy is this video funny? ASSISTANT:"
+['video']
+The baby
+The baby
+The baby
+The baby, the baby, the baby, the baby, the baby, who is sleeping and the baby, the camera, and the camera, and the camera, the camera, the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the girl, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the girl, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the camera, and the girl, and the camera, and the camera, the camera, and the camera, and the camera, and the girl, and the camera, the girl, and the camera, the camera, and the camera, and the camera, and the girl, and the girl, and the girl, and the camera, and the camera, and the camera, and the girl, the camera, and the girl, and the girl, and the girl, and the camera, and the girl, and the girl, and the girl, and the girl, and the camera, and the girl, and the girl, and the girl, and the girl, and the girl, and the girl, the girl, and the little, and the girl, and the camera, and the girl, and the camera, and the girl, and the girl, and the girl, and the girl, the camera, the girl, the girl, and the girl, the girl, and the girl, and the girl, and the girl, and the camera, and the girl, and the girl, and the camera, and the girl, and the girl, and the girl, and the girl, and the girl, and the girl, and the girl, and the girl, the girl, and the

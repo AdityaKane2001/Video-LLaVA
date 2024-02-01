@@ -6,9 +6,10 @@ IFS=',' read -ra GPULIST <<< "$gpu_list"
 CHUNKS=${#GPULIST[@]}
 
 CKPT_NAME="Video-LLaVA-7B"
-CKPT="checkpoints/${CKPT_NAME}"
+# CKPT="checkpoints/${CKPT_NAME}"
+CKPT="LanguageBind/${CKPT_NAME}"
 SPLIT="llava_gqa_testdev_balanced"
-EVAL="eval"
+EVAL="/home/akane38/Video-LLaVA/llava/eval"
 GQADIR="${EVAL}/gqa/data"
 
 for IDX in $(seq 0 $((CHUNKS-1))); do

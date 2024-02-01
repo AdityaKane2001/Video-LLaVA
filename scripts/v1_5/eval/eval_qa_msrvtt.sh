@@ -1,5 +1,3 @@
-
-
 GPT_Zero_Shot_QA="eval/GPT_Zero_Shot_QA"
 output_name="Video-LLaVA-7B"
 pred_path="${GPT_Zero_Shot_QA}/MSRVTT_Zero_Shot_QA/${output_name}/merge.jsonl"
