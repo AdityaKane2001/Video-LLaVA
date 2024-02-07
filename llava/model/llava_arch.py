@@ -30,6 +30,7 @@ class LlavaMetaModel:
         super(LlavaMetaModel, self).__init__(config)
 
         if hasattr(config, "mm_image_tower"):
+            # config.output_attentions = True
             self.image_tower = build_image_tower(config, delay_load=True)
             self.mm_projector = build_vision_projector(config)
         if hasattr(config, "mm_video_tower"):

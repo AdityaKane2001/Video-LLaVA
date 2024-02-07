@@ -6,9 +6,9 @@ IFS=',' read -ra GPULIST <<< "$gpu_list"
 CHUNKS=${#GPULIST[@]}
 
 CKPT_NAME="Video-LLaVA-7B"
-CKPT="checkpoints/${CKPT_NAME}"
+CKPT="LanguageBind/${CKPT_NAME}"
 SPLIT="llava_vqav2_mscoco_test-dev2015"
-EVAL="eval"
+EVAL="/home/akane38/Video-LLaVA/llava/eval"
 
 for IDX in $(seq 0 $((CHUNKS-1))); do
     CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python3 -m llava.eval.model_vqa_loader \

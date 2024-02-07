@@ -49,9 +49,6 @@ def main():
     keywords = [stop_str]
     stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
     
-    with open("model_arch.out", "a+") as f:
-        f.write(str(model))
-        
     with torch.inference_mode():
         output_ids = model.generate(
             input_ids,

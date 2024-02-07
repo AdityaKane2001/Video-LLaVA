@@ -2,8 +2,8 @@
 
 
 CKPT_NAME="Video-LLaVA-7B"
-CKPT="checkpoints/${CKPT_NAME}"
-EVAL="eval"
+CKPT="LanguageBind/${CKPT_NAME}"
+EVAL="/home/akane38/Video-LLaVA/llava/eval"
 python3 -m llava.eval.model_vqa_loader \
     --model-path ${CKPT} \
     --question-file ${EVAL}/pope/llava_pope_test.jsonl \

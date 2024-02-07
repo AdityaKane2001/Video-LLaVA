@@ -1,0 +1,137 @@
+nohup: ignoring input
+Please make sure to use our provided visual features as gqadataset.org for better comparability. We provide both spatial and object-based features trained on GQA train set.
+In particular please avoid using features from https://github.com/peteanderson80/bottom-up-attention since they were trained on images contained in the GQA validation set and thus may give false scores improvement.
+
+Please consider using --consistency to compute consistency scores for entailed questions.
+If you do so, please provide answers to all questions in val_all_questions.json.
+
+Please consider using --grounding to compute attention scores.
+If you do so, please provide attention maps through --attentions.
+
+Loading scene graphs...
+Failed to load scene graphs -- cannot evaluate grounding
+Loading questions...
+Traceback (most recent call last):
+  File "/home/akane38/Video-LLaVA/llava/eval/eval_gqa.py", line 135, in <module>
+    questions = loadFile(args.questions)
+  File "/home/akane38/Video-LLaVA/llava/eval/eval_gqa.py", line 121, in loadFile
+    raise Exception("Can't find {}".format(name))
+Exception: Can't find /scc_cephfs/yy/lb/LLaVA-Video-YY/questions1.2/testdev_balanced_questions.json
+nohup: ignoring input
+Please make sure to use our provided visual features as gqadataset.org for better comparability. We provide both spatial and object-based features trained on GQA train set.
+In particular please avoid using features from https://github.com/peteanderson80/bottom-up-attention since they were trained on images contained in the GQA validation set and thus may give false scores improvement.
+
+Please consider using --consistency to compute consistency scores for entailed questions.
+If you do so, please provide answers to all questions in val_all_questions.json.
+
+Please consider using --grounding to compute attention scores.
+If you do so, please provide attention maps through --attentions.
+
+Loading scene graphs...
+Failed to load scene graphs -- cannot evaluate grounding
+Loading questions...
+Traceback (most recent call last):
+  File "/home/akane38/Video-LLaVA/llava/eval/eval_gqa.py", line 135, in <module>
+    questions = loadFile(args.questions)
+  File "/home/akane38/Video-LLaVA/llava/eval/eval_gqa.py", line 112, in loadFile
+    data = json.load(file)
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/home/akane38/miniconda3/envs/vllava/lib/python3.10/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 155)
+nohup: ignoring input
+Please make sure to use our provided visual features as gqadataset.org for better comparability. We provide both spatial and object-based features trained on GQA train set.
+In particular please avoid using features from https://github.com/peteanderson80/bottom-up-attention since they were trained on images contained in the GQA validation set and thus may give false scores improvement.
+
+Please consider using --consistency to compute consistency scores for entailed questions.
+If you do so, please provide answers to all questions in val_all_questions.json.
+
+Please consider using --grounding to compute attention scores.
+If you do so, please provide attention maps through --attentions.
+
+Loading scene graphs...
+Failed to load scene graphs -- cannot evaluate grounding
+Loading questions...
+Traceback (most recent call last):
+  File "/home/akane38/Video-LLaVA/llava/eval/eval_gqa.py", line 135, in <module>
+    questions = loadFile(args.questions)
+  File "/home/akane38/Video-LLaVA/llava/eval/eval_gqa.py", line 121, in loadFile
+    raise Exception("Can't find {}".format(name))
+Exception: Can't find {tier}_all_questions.json
+nohup: ignoring input
+Please make sure to use our provided visual features as gqadataset.org for better comparability. We provide both spatial and object-based features trained on GQA train set.
+In particular please avoid using features from https://github.com/peteanderson80/bottom-up-attention since they were trained on images contained in the GQA validation set and thus may give false scores improvement.
+
+Please consider using --consistency to compute consistency scores for entailed questions.
+If you do so, please provide answers to all questions in val_all_questions.json.
+
+Please consider using --grounding to compute attention scores.
+If you do so, please provide attention maps through --attentions.
+
+Loading scene graphs...
+Failed to load scene graphs -- cannot evaluate grounding
+Loading questions...
+Loading choices...
+Failed to load choices -- cannot evaluate validity or plausibility
+Loading predictions...
+  0%|          | 0/12578 [00:00<?, ?it/s]100%|██████████| 12578/12578 [00:00<00:00, 147135.31it/s]
+
+Binary: 71.25%
+Open: 44.25%
+Accuracy: 56.64%
+Validity: 0.00%
+Plausibility: 0.00%
+Distribution: 1.67 (lower is better)
+
+Accuracy / structural type:
+  choose: 65.72% (1129 questions)
+  compare: 63.16% (589 questions)
+  logical: 72.43% (1803 questions)
+  query: 44.25% (6805 questions)
+  verify: 75.18% (2252 questions)
+
+Accuracy / semantic type:
+  attr: 64.52% (5186 questions)
+  cat: 49.96% (1149 questions)
+  global: 61.78% (157 questions)
+  obj: 83.16% (778 questions)
+  rel: 46.35% (5308 questions)
+
+Accuracy / steps number:
+  1: 78.90% (237 questions)
+  2: 53.57% (6395 questions)
+  3: 56.42% (4266 questions)
+  4: 62.04% (793 questions)
+  5: 69.59% (822 questions)
+  6: 80.49% (41 questions)
+  7: 35.00% (20 questions)
+  8: 0.00% (3 questions)
+  9: 0.00% (1 questions)
+
+Accuracy / words number:
+  3: 35.76% (151 questions)
+  4: 54.13% (630 questions)
+  5: 46.90% (1290 questions)
+  6: 56.65% (2074 questions)
+  7: 60.48% (1642 questions)
+  8: 61.77% (1185 questions)
+  9: 65.26% (1281 questions)
+  10: 64.85% (1249 questions)
+  11: 59.36% (994 questions)
+  12: 64.11% (638 questions)
+  13: 59.09% (462 questions)
+  14: 57.39% (345 questions)
+  15: 38.40% (237 questions)
+  16: 13.68% (117 questions)
+  17: 0.00% (94 questions)
+  18: 0.00% (76 questions)
+  19: 2.33% (43 questions)
+  20: 0.00% (32 questions)
+  21: 0.00% (19 questions)
+  22: 0.00% (12 questions)
+  23: 0.00% (4 questions)
+  24: 0.00% (2 questions)
+  25: 0.00% (1 questions)
